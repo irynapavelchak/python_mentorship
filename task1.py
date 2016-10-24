@@ -13,5 +13,19 @@ def generate_password():
     passw = a + b + c + d + e + f + str(g) + h 
 
     print passw 
+    
+def generate_password2(): 
+    passw = []
+    passw.append(random.choice(string.letters).upper())
+    for i in range (0,4):
+        passw.append(random.choice(string.letters).lower())
 
-generate_password()
+    passw.append(str(random.randrange(0, 9))) 
+    passw.append(random.choice(['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '-', '+', '=', ';', ':']))
+    
+    full_passw = ''
+    for j in range (0,7):
+        full_passw = full_passw + passw[j]
+    print full_passw
+
+generate_password2()
