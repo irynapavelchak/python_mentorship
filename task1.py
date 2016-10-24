@@ -16,9 +16,9 @@ def generate_password():
     
 def generate_password2(): 
     passw = []
-    passw.append(random.choice(string.letters).upper())
+    passw.append(random.choice(string.uppercase))
     for i in range (0,4):
-        passw.append(random.choice(string.letters).lower())
+        passw.append(random.choice(string.lowercase))
 
     passw.append(str(random.randrange(0, 9))) 
     passw.append(random.choice(['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '-', '+', '=', ';', ':']))
