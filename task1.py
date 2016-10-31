@@ -27,5 +27,24 @@ def generate_password2():
     for j in range (0,7):
         full_passw = full_passw + passw[j]
     print full_passw
+    
+def generate_password3(n): 
+    passw = []
+    passw.append(random.choice(string.uppercase))
+    if n >= 4: 
+        for i in range (0,n-3):
+            passw.append(random.choice(string.lowercase))
+    else:
+        print 'Please put bigger number in parameters'
 
-generate_password2()
+    passw.append(str(random.randrange(0, 9))) 
+    passw.append(random.choice(['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '-', '+', '=', ';', ':']))
+    
+      
+    random.shuffle(passw)
+    result = ''.join(passw)
+    
+    if n >= 4:    
+        print result    
+
+generate_password3(18)
