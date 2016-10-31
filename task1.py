@@ -32,22 +32,22 @@ def generate_password3(n):
     if n < 4:
         print 'Please put bigger number in parameters'
         return  
-    else:
-        passw = []
-        passw.append(random.choice(string.uppercase))
+    
+    passw = []
+    passw.append(random.choice(string.uppercase))
    
-        for i in range (0,n-3):
-            passw.append(random.choice(string.lowercase))
+    for i in range (0,n-3):
+        passw.append(random.choice(string.lowercase))
    
               
-        passw.append(str(random.randrange(0, 9))) 
-        passw.append(random.choice(['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '-', '+', '=', ';', ':']))
+    passw.append(str(random.randrange(0, 9))) 
+    passw.append(random.choice(['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '-', '+', '=', ';', ':']))
     
       
-        random.shuffle(passw)
-        result = ''.join(passw)
+    random.shuffle(passw)
+    result = ''.join(passw)
     
     
-        print result    
+    print result    
 
-generate_password3(9)
+generate_password3(2)
