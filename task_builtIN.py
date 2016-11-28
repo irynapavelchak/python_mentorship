@@ -1,9 +1,9 @@
 def divisors(n):
     l = []
-    for i in range (0, n):
+    for i in range (1, n+1):
         res = divmod(n, i)
         if res[1] == 0:
-            l.append(res[0])
+            l.append(i)
     print l
         
 
