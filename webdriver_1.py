@@ -1,13 +1,15 @@
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from hamcrest import assert_that
+
 
 
 driver = webdriver.Chrome('C:/Python27/chromedriver-Windows')
 driver.get("https://jysk.ua/")
 
 inputElement = driver.find_element_by_id("edit-query")
-#inputElement = driver.find_element_by_xpath("//input[@placeholder = 'Шукати товар або категорію...']")
+#inputElement = driver.find_element_by_xpath("//input[@placeholder = '']")
 
 inputElement.send_keys("RYSLINGE")
 
@@ -23,8 +25,7 @@ try:
     resultElement = driver.find_element_by_xpath("//div[@class = 'view-header']/h1")
     result = resultElement.text
     print result
-
-    #assert result.find('8') != -1:
+    assert_that('8' in result)
 
 finally:
     driver.quit()
