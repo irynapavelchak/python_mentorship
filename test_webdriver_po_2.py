@@ -3,6 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from hamcrest import assert_that
+from time import sleep
 
 
 class MainPage(object):
@@ -65,10 +66,66 @@ class FirstElementPage(object):
         # assert_that('4' in result6)
 
     def leave_vidguk(self):
-        wait = WebDriverWait(driver, 10)
+        self.driver.implicitly_wait(10)
 
-        self.driver.find_element_by_css_selector("#product-ratings > div > div > div > div > div > a").click()
+        self.driver.find_element_by_link_text("Залишити відгук").click()
         # element7.click()
+
+class vidguk(object):
+    def __init__(self, driver):
+        self.driver = driver
+
+    def set_star(self):
+        starElement = self.driver.find_element_by_xpath("//*[@id='rating-select']/div/span[1]")
+        #("//dic[@class = 'stars rating-select']/span[@class = 'star-0 full']")
+        starElement.click()
+
+
+    def set_tema(self, tema):
+        self.tema = tema
+        temaElement = self.driver.find_element_by_xpath("//input[@name = 'title']")
+        temaElement.click()
+        temaElement.send_keys(tema)
+
+
+    def set_vidguk(self, vidguk_text):
+        self.vidguk_text = vidguk_text
+        vidgElement = self.driver.find_element_by_id("edit-body")
+        vidgElement.click()
+        vidgElement.send_keys(vidguk_text)
+
+
+    def set_imja(self, imja):
+        self.imja = imja
+        nameElement = self.driver.find_element_by_id("edit-author")
+        nameElement.click()
+        nameElement.send_keys(imja)
+
+
+    def set_misto(self, misto):
+        self.misto = misto
+        mistoElement = self.driver.find_element_by_id("edit-city")
+        mistoElement.click()
+        mistoElement.send_keys(misto)
+
+
+    def set_email(self, email):
+        self.email = email
+        emailElement = self.driver.find_element_by_id("edit-email")
+        emailElement.click()
+        emailElement.send_keys(email)
+
+
+    def click_send_vidguk(self):
+        self.driver.find_element_by_id("edit-submit--4").click()
+
+    def check_validation_failed(self):
+        if len(self.driver.find_elements_by_xpath("//*[@id=\"jysk-reviews-add-review-form\"]/div/div/div[9]")) == 0:
+            print "Validation regarding red checkbox is failed"
+
+
+
+
 
 
 def set_up_driver(page_url):
@@ -101,8 +158,20 @@ def test_search_ryslinge():
     # firstElement.check_vidguks_amount()
     firstElement.leave_vidguk()
 
+    vidgukElement = vidguk(driver)
+    vidgukElement.set_star()
+    vidgukElement.set_tema('Vidguk 1')
+    vidgukElement.set_vidguk('bla bla bla')
+
+    vidgukElement.set_imja('Iryna')
+    vidgukElement.set_misto('Che')
+    vidgukElement.set_email('iryna.pavelchak@gmail.com')
+    vidgukElement.click_send_vidguk()
+    sleep(2)
+    vidgukElement.check_validation_failed()
+
     tear_down_driver(driver)
 
 
-#if __name__ == "__main__":
-#    test_search_ryslinge()
+if __name__ == "__main__":
+    test_search_ryslinge()
