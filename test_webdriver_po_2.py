@@ -7,17 +7,17 @@ from time import sleep
 
 
 class MainPage(object):
-    search_text = ""
 
     def __init__(self, driver):
         self.driver = driver
 
-    def search_action(self):
+    def search_action(self, search_text):
+        self.search_text = search_text
         inputElement = self.driver.find_element_by_id("edit-query")
-        inputElement.send_keys(self.search_text)
+        inputElement.send_keys(search_text)
         inputElement.submit()
 
-    def check_result(self):
+    def get_result(self):
         # we have to wait for the page to refresh, the last thing that seems to be updated is the title
         WebDriverWait(self.driver, 10).until(EC.title_contains("JYSK"))
 
@@ -25,11 +25,13 @@ class MainPage(object):
 
         resultElement = self.driver.find_element_by_xpath("//div[@class = 'view-header']/h1")
         result = resultElement.text
-        print result
-        assert_that('8' in result)
+        return result
+
+
 
     def click_first_element(self):
-        self.driver.find_element_by_xpath("//img[contains(@src, '50831')]/parent::a").click()
+        self.driver.find_element_by_xpath("//*[@id='node-272253']/figure/a/img").click()
+
 
 
 class FirstElementPage(object):
@@ -71,7 +73,7 @@ class FirstElementPage(object):
         self.driver.find_element_by_link_text("Залишити відгук").click()
         # element7.click()
 
-class vidguk(object):
+class Vidguk(object):
     def __init__(self, driver):
         self.driver = driver
 
@@ -120,8 +122,11 @@ class vidguk(object):
         self.driver.find_element_by_id("edit-submit--4").click()
 
     def check_validation_failed(self):
+        self.failed_res = 0
         if len(self.driver.find_elements_by_xpath("//*[@id=\"jysk-reviews-add-review-form\"]/div/div/div[9]")) == 0:
-            print "Validation regarding red checkbox is failed"
+            self.failed_res = 1
+
+        assert self.failed_res == 0
 
 
 
@@ -144,10 +149,11 @@ def test_search_ryslinge():
     mainPage = MainPage(driver)
 
     # Sets the text of search textbox
-    mainPage.search_text = "RYSLINGE"
+    #mainPage.search_text = "RYSLINGE"
 
-    mainPage.search_action()
-    mainPage.check_result()
+    mainPage.search_action("RYSLINGE")
+    a = mainPage.get_result()
+    assert_that('8' in a)
     mainPage.click_first_element()
 
     firstElement = FirstElementPage(driver)
@@ -158,7 +164,7 @@ def test_search_ryslinge():
     # firstElement.check_vidguks_amount()
     firstElement.leave_vidguk()
 
-    vidgukElement = vidguk(driver)
+    vidgukElement = Vidguk(driver)
     vidgukElement.set_star()
     vidgukElement.set_tema('Vidguk 1')
     vidgukElement.set_vidguk('bla bla bla')
